@@ -2,6 +2,7 @@ __author__ = 'Matej Zrimsek'
 
 import types
 import random
+import sys
 
 def dataInput(file):
     lines = open(file).read().splitlines()
@@ -15,7 +16,7 @@ def dataInput(file):
             exp.append(map(int, line.split()[:-1]))
     return nrOfVars, exp
 
-def solveSAT(exp):
+def solveSAT(exp, nrOfVars):
     solution = set()
     vars = range(-nrOfVars, 0) + range(1, nrOfVars+1)
     while True:
@@ -92,14 +93,24 @@ def insertValue(lit ,exp, solution):
 
 
 
+if __name__ == '__main__':
+	inputFileName = sys.argv[1]
+	outputFileName = sys.argv[2]
+	
+	nrOfVars, exp = dataInput(inputFileName)
+    # nrOfVars, exp = dataInput("test_file.txt")
+	# nrOfVars, exp = dataInput("dimacs/sudoku1.txt")
+	# nrOfVars, exp = dataInput("dimacs/sudoku2.txt")
 
-nrOfVars, exp = dataInput("test_file.txt")
-# nrOfVars, exp = dataInput("dimacs/sudoku1.txt")
-# nrOfVars, exp = dataInput("dimacs/sudoku2.txt")
+	(satisfiable, solution) = solveSAT(exp, nrOfVars)
 
-(satisfiable, solution) =  solveSAT(exp)
+	f = open(outputFileName, 'w')
+	print >> f, solution
+	f.close()
 
-if(satisfiable):
-    print "Satisfiable", solution
-else :
-    print "Not satisfiable", solution
+	'''
+	if(satisfiable):
+	    print "Satisfiable", solution
+	else :
+		print "Not satisfiable", solution
+	'''
